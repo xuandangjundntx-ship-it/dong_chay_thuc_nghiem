@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102b46">
+<title>Kiểm tra trước tác động | Dòng chảy Lịch sử Việt Nam</title>
+<style>
+:root{--navy:#102b46;--blue:#1e5b85;--gold:#d7a84b;--ink:#182536;--muted:#65758b;--paper:#f4f7fb;--line:#dce4ee;--white:#fff;--green:#16794b;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(120deg,#102b46,#1d5279);color:white;padding:28px 18px 34px;border-bottom:4px solid var(--gold)}
+.wrap{max-width:1050px;margin:auto;padding:0 16px}.brand{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#dbe8f3;font-weight:700}.hero h1{font-size:clamp(25px,4vw,38px);line-height:1.15;margin:9px 0}.hero p{max-width:760px;color:#e4edf5;margin:8px 0 0}
+main{padding:24px 0 56px}.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:22px;margin:0 0 18px;box-shadow:0 5px 20px #1b35500a}
+h2{margin:0 0 12px;color:var(--navy);font-size:22px}h3{margin:0 0 9px;font-size:18px;color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field label{display:block;font-weight:700;margin-bottom:6px}.field input,.field select,.answer{width:100%;border:1px solid #bdcbd9;border-radius:10px;padding:12px;font:inherit;background:white;color:var(--ink)}.field input:focus,.field select:focus,.answer:focus{outline:3px solid #b8d8ef;border-color:var(--blue)}
+.note{background:#eef5fa;border-left:4px solid var(--blue);padding:12px 14px;border-radius:8px;color:#344b61}.warning{background:#fff8e8;border-left:4px solid var(--gold);padding:12px 14px;border-radius:8px;color:#5b481f}
+button{border:0;border-radius:10px;background:var(--blue);color:white;font-weight:750;font-size:15px;padding:12px 18px;cursor:pointer}button:hover{filter:brightness(1.08)}button.secondary{background:#e8eef4;color:var(--navy)}button.danger{background:#9f2924}button:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.hidden{display:none!important}.meta{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:14px}.pill{display:inline-block;padding:4px 10px;border-radius:99px;background:#edf3f8;color:#244863;font-size:13px;font-weight:700}
+.question{padding:17px 0;border-top:1px solid var(--line)}.question:first-child{border-top:0}.qtitle{font-weight:750;margin-bottom:10px}.option{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border:1px solid #e2e8ef;border-radius:9px;margin:7px 0;cursor:pointer}.option:hover{background:#f6f9fc}.option input{margin-top:5px;accent-color:var(--blue)}.answer{min-height:92px;resize:vertical}
+.topbar{position:sticky;top:0;z-index:5;background:#ffffffed;backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 0}.topinner{display:flex;align-items:center;justify-content:space-between;gap:10px}.timer{font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}.progress{height:7px;background:#e6edf4;border-radius:99px;overflow:hidden;margin-top:9px}.progress>span{display:block;height:100%;background:var(--gold);width:0}
+footer{color:var(--muted);text-align:center;font-size:13px;padding:20px}
+.small{font-size:13px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#f5f8fb;border-radius:10px;padding:12px}.stat b{display:block;font-size:23px;color:var(--navy)}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#f2f6fa;color:var(--navy)}
+@media(max-width:680px){.grid,.stats{grid-template-columns:1fr}.panel{padding:16px}.topinner{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header><div class="wrap hero">
+<div class="brand">Dòng chảy Lịch sử Việt Nam · Nghiên cứu khoa học hành vi</div>
+<h1>Bài kiểm tra kiến thức trước tác động</h1>
+<p>Đề A (T₀) · Dành cho học sinh THPT khối 10, 11 và 12</p>
+</div></header>
+<div class="topbar hidden" id="examBar"><div class="wrap topinner"><div><b id="studentLabel">Bài kiểm tra</b><div class="small">Tiến độ làm bài</div></div><div class="timer" id="timer">55:00</div></div><div class="wrap"><div class="progress"><span id="progressFill"></span></div></div></div>
+<main class="wrap">
+<section class="panel" id="intro">
+<h2>Thông tin dự thi</h2>
+<div class="note">Bài kiểm tra gồm 20 câu trắc nghiệm và 8 tình huống tư duy bằng chứng. Phần trắc nghiệm được chấm tự động; phần tình huống được lưu nguyên văn để người chấm đánh giá theo rubric 0–2 điểm/tình huống.</div>
+<div class="grid" style="margin-top:16px">
+<div class="field"><label for="grade">Khối lớp *</label><select id="grade"><option value="">-- Chọn khối --</option><option value="10">Khối 10</option><option value="11">Khối 11</option><option value="12">Khối 12</option></select></div>
+<div class="field"><label for="className">Lớp *</label><input id="className" maxlength="20" placeholder="Ví dụ: 10A1"></div>
+<div class="field"><label for="code">Mã nghiên cứu *</label><input id="code" maxlength="40" autocomplete="off" placeholder="Mã do nhóm nghiên cứu cấp"></div>
+<div class="field"><label for="school">Trường (nếu cần)</label><input id="school" maxlength="100" placeholder="Tên trường"></div>
+</div>
+<p class="small">Không nhập họ tên, số điện thoại hoặc thông tin cá nhân không cần thiết. Mã nghiên cứu phải thống nhất với mã dùng để ghép dữ liệu khảo sát và nhật ký.</p>
+<div class="warning"><b>Lưu ý:</b> Đây là bài đo đầu vào. Hãy tự làm, không tra cứu tài liệu và không trao đổi đáp án. Bạn có 55 phút. Khi nộp, câu trả lời sẽ được lưu trên trình duyệt/thiết bị này.</div>
+<div class="actions"><button id="startBtn">Bắt đầu làm bài</button></div>
+</section>
+
+<section class="hidden" id="exam">
+<div class="panel"><h2>Phần I – Kiến thức lịch sử</h2><div class="meta"><span class="pill">20 câu</span><span class="pill">20 điểm</span><span class="pill">Chọn một đáp án đúng nhất</span></div><div id="mcq"></div></div>
+<div class="panel"><h2>Phần II – Tư duy và đánh giá chứng cứ</h2><div class="meta"><span class="pill">8 tình huống</span><span class="pill">16 điểm tối đa</span><span class="pill">Chấm theo rubric 0–2</span></div>
+<p class="small">Trình bày cách suy luận. Có thể nêu loại nguồn cần tìm, cách kiểm tra xuất xứ, niên đại, bối cảnh, giới hạn và cách đối chiếu.</p><div id="evidence"></div></div>
+<div class="panel"><div class="warning">Trước khi nộp, hãy kiểm tra các câu đã trả lời. Bài đã nộp sẽ được lưu và không thể sửa từ giao diện học sinh.</div><div class="actions"><button id="submitBtn">Nộp bài</button><button class="secondary" id="backTop">Quay lên đầu</button></div></div>
+</section>
+
+<section class="panel hidden" id="done">
+<h2>Đã ghi nhận bài làm</h2><p id="doneMsg"></p><div class="note">Kết quả đã được lưu trên trình duyệt này. Phần tự luận cần được chấm theo rubric trước khi tổng hợp điểm tư duy bằng chứng.</div><div class="actions"><button class="secondary" onclick="location.reload()">Quay về trang đầu</button></div>
+</section>
+
+<section class="panel" id="admin">
+<h2>Khu vực quản trị – Xuất báo cáo</h2>
+<p class="small">Chỉ dùng trên thiết bị/trình duyệt đã tiếp nhận bài làm. Dữ liệu không tự đồng bộ giữa các thiết bị.</p>
+<div class="grid">
+<div class="field"><label for="adminPin">Mã quản trị</label><input id="adminPin" type="password" placeholder="Nhập mã quản trị"></div>
+<div class="field"><label for="filterGrade">Lọc theo khối</label><select id="filterGrade"><option value="all">Tất cả các khối</option><option value="10">Khối 10</option><option value="11">Khối 11</option><option value="12">Khối 12</option></select></div>
+</div>
+<div class="actions"><button id="viewBtn">Xem thống kê</button><button id="exportBtn" disabled>Xuất Excel (.xlsx)</button><button class="secondary" id="csvBtn" disabled>Xuất CSV dự phòng</button></div>
+<div id="adminStats" class="hidden" style="margin-top:18px"></div>
+<p class="small">Mã quản trị mặc định: <b>DCST0-2026</b>. Hãy đổi hằng số ADMIN_PIN trong mã nguồn trước khi triển khai. Mã này chỉ hạn chế thao tác giao diện, không phải cơ chế bảo mật máy chủ.</p>
+</section>
+</main>
+<footer>Đề A (T₀) · Lưu trữ cục bộ trên thiết bị · Không gửi dữ liệu về GitHub</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+const ADMIN_PIN = "DCST0-2026";
+const DB_NAME="DongChayLichSu_T0", STORE="submissions";
+const mcqs = [
+["Hiện thực lịch sử và nhận thức lịch sử được hiểu đúng nhất như thế nào?",["Hiện thực lịch sử là những gì đã diễn ra; nhận thức lịch sử là hiểu biết của con người về quá khứ.","Hai khái niệm hoàn toàn giống nhau.","Nhận thức lịch sử luôn đầy đủ và không thay đổi.","Hiện thực lịch sử chỉ gồm các sự kiện có văn bản ghi chép."],0],
+["Thành Cổ Loa gắn với nhà nước nào trong lịch sử Việt Nam?",["Văn Lang thời Hùng Vương.","Âu Lạc dưới thời An Dương Vương.","Đại Việt thời Lý.","Đại Cồ Việt thời Đinh."],1],
+["Nhận định nào phân biệt tương đối đúng không gian lịch sử Champa và Phù Nam?",["Champa gắn với dải duyên hải miền Trung; Phù Nam gắn với hạ lưu Mekong.","Champa chỉ tồn tại ở đồng bằng Bắc Bộ; Phù Nam ở miền núi phía Bắc.","Cả hai chỉ tồn tại ở lưu vực sông Hồng.","Hai nền văn minh có cùng một trung tâm duy nhất ở Tây Nguyên."],0],
+["Trình tự quốc hiệu nào đúng?",["Đại Việt năm 968, Đại Cồ Việt năm 1054.","Đại Cồ Việt năm 968, Đại Việt năm 1054.","Đại Việt năm 939, Đại Cồ Việt năm 1009.","Đại Cồ Việt năm 1010, Đại Việt năm 1428."],1],
+["Khi sử dụng số liệu về dân số các cộng đồng dân tộc Việt Nam, thông tin nào cần được kiểm tra?",["Chỉ cần ghi số liệu, không cần nguồn.","Năm thống kê, chỉ tiêu, phạm vi và nguồn dữ liệu.","Chỉ cần chọn số liệu lớn nhất.","Chỉ cần ghi tên người đăng số liệu."],1],
+["Một địa phương muốn bảo tồn đình cổ, hiện vật và làn điệu dân ca. Cách tiếp cận nào phù hợp nhất?",["Chỉ bảo tồn công trình, không cần quan tâm cộng đồng.","Thay đổi toàn bộ hình thức để thu hút khách.","Phân biệt di sản vật thể và phi vật thể, đồng thời tôn trọng cộng đồng chủ thể.","Chỉ lưu ảnh trên mạng là đủ để bảo tồn."],2],
+["Khi giải thích kết quả của một cuộc chiến tranh trong lịch sử, nhận định nào hợp lý nhất?",["Địa hình là yếu tố duy nhất quyết định thắng bại.","Cần xem xét tổng hợp tổ chức, nguồn lực, chiến lược, con người và hoàn cảnh.","Quân số luôn quyết định hoàn toàn kết quả.","Kết quả chỉ phụ thuộc vào vũ khí."],1],
+["Điểm nổi bật trong cách đánh quân Nam Hán trên sông Bạch Đằng năm 938 là gì?",["Chỉ dựa vào thành lũy trên núi.","Kết hợp điều kiện sông nước, thủy triều với sự chuẩn bị và tổ chức lực lượng.","Không cần nắm địa hình và thời điểm thủy triều.","Chỉ sử dụng kỵ binh trên đồng bằng."],1],
+["Khởi nghĩa Lam Sơn do Lê Lợi lãnh đạo diễn ra trong khoảng thời gian nào?",["1407–1413.","1418–1427.","1428–1433.","1527–1592."],1],
+["Phong trào Tây Sơn bùng nổ vào năm nào?",["1698.","1740.","1771.","1802."],2],
+["Khi so sánh các cuộc cải cách trong lịch sử, bộ tiêu chí nào phù hợp nhất?",["Chỉ so sánh tên người đứng đầu.","Chỉ so sánh số lượng văn bản ban hành.","Bối cảnh, mục tiêu, biện pháp, kết quả và giới hạn.","Chỉ so sánh thời gian kéo dài."],2],
+["Khi kiểm chứng tư liệu lịch sử liên quan Hoàng Sa và Trường Sa, cách làm nào chặt chẽ nhất?",["Dựa vào một bản đồ đơn lẻ để kết luận mọi vấn đề.","Chọn nguồn có hình ảnh đẹp nhất.","Xem xét xuất xứ, niên đại, mục đích và đối chiếu nhiều nhóm tư liệu độc lập.","Chỉ dựa vào bài đăng không dẫn nguồn."],2],
+["Phân tích một hiện vật nghệ thuật truyền thống cần chú ý điều gì?",["Chỉ dựa vào cảm nhận cá nhân.","Chất liệu, kỹ thuật, chức năng và bối cảnh lịch sử.","Chỉ căn cứ kích thước hiện vật.","Không cần xác định niên đại."],1],
+["Khi nghiên cứu tên gọi và bí danh của Hồ Chí Minh, nguyên tắc nào phù hợp?",["Dùng mọi tên gọi thay thế cho nhau trong mọi thời kỳ.","Đặt tên gọi vào đúng thời điểm, hoàn cảnh hoạt động và tư liệu có niên đại.","Chỉ dùng một tên gọi cho toàn bộ cuộc đời.","Không cần đối chiếu tư liệu."],1],
+["Sự kiện nào diễn ra ngày 1/9/1858?",["Triều Nguyễn ký Hiệp định Sơ bộ.","Liên quân Pháp – Tây Ban Nha tấn công Đà Nẵng.","Phong trào Cần Vương bùng nổ.","Khởi nghĩa Yên Thế kết thúc."],1],
+["Nhận định nào phản ánh phù hợp bối cảnh và thời cơ Cách mạng tháng Tám năm 1945?",["Cách mạng chỉ diễn ra do một nguyên nhân duy nhất.","Thời cơ hình thành từ nhiều biến động trong nước và quốc tế.","Thời cơ không liên quan tình hình quốc tế.","Cách mạng diễn ra hoàn toàn không có sự chuẩn bị."],1],
+["Kháng chiến toàn quốc chống thực dân Pháp bùng nổ vào ngày nào?",["2/9/1945.","19/12/1946.","7/5/1954.","21/7/1954."],1],
+["Theo Hiệp định Genève năm 1954, vĩ tuyến 17 có ý nghĩa gì?",["Biên giới quốc gia vĩnh viễn.","Giới tuyến quân sự tạm thời.","Ranh giới giữa hai quốc gia độc lập được công nhận vĩnh viễn.","Đường phân chia lãnh thổ từ thời nhà Nguyễn."],1],
+["Trình tự nào đúng?",["Đổi mới 1975; sự kiện Campuchia 1986.","Việt Nam đưa quân vào Campuchia cuối năm 1978; Phnom Penh được giải phóng tháng 1/1979; Đổi mới được khởi xướng năm 1986.","Đổi mới 1979; sự kiện Campuchia 1986.","Các sự kiện trên đều diễn ra trong năm 1986."],1],
+["Khi nghiên cứu một điều ước quốc tế, cần phân biệt những mốc nào?",["Chỉ ngày công bố trên báo.","Ngày ký, phê chuẩn, có hiệu lực và thời điểm tư cách thành viên bắt đầu.","Chỉ ngày diễn ra hội nghị.","Ngày ký và ngày có hiệu lực luôn trùng nhau."],1]
+];
+const evidence = [
+["E01 – Truyền thuyết, khảo cổ và thư tịch","Một câu chuyện dân gian kể về nguồn gốc một cộng đồng; tại địa điểm liên quan có hiện vật khảo cổ và một số văn bản được biên soạn ở thời kỳ sau. Em sẽ sử dụng và đối chiếu các nguồn này như thế nào để tìm hiểu quá khứ?"],
+["E02 – Champa, Phù Nam và khảo cổ","Một hiện vật được tìm thấy tại địa điểm khai quật nhưng chưa rõ niên đại và chức năng. Em cần những thông tin hoặc phương pháp nào trước khi kết luận hiện vật thuộc về một nền văn hóa cụ thể?"],
+["E03 – Cộng đồng, di sản và tín ngưỡng","Một lễ hội địa phương được giới thiệu trên mạng là “có từ hàng nghìn năm”. Em sẽ kiểm tra nhận định này và tìm hiểu vai trò của cộng đồng chủ thể bằng cách nào?"],
+["E04 – Nhà nước và pháp luật trong lịch sử","Một bài viết dùng khái niệm pháp luật hiện đại để mô tả một quy định của nhà nước quân chủ. Em sẽ đánh giá cách diễn giải đó ra sao và cần đặt quy định vào bối cảnh nào?"],
+["E05 – Tư liệu về Hoàng Sa và Trường Sa","Em được cung cấp một bản đồ không rõ người lập, thời điểm và mục đích. Em cần kiểm tra những yếu tố nào và tìm thêm loại tư liệu nào trước khi sử dụng bản đồ làm chứng cứ?"],
+["E06 – Nhân vật và nghệ thuật lịch sử","Hai tài liệu ghi khác nhau về tên gọi một nhân vật ở hai thời điểm; một hiện vật nghệ thuật được cho là gắn với nhân vật đó. Em sẽ xác minh mối liên hệ giữa nhân vật, tên gọi, hiện vật và thời điểm bằng cách nào?"],
+["E07 – Số liệu kinh tế – xã hội thời Đổi mới","Hai nguồn đưa ra số liệu khác nhau về cùng một chỉ tiêu kinh tế trong một năm. Em sẽ kiểm tra những yếu tố nào trước khi lựa chọn hoặc giải thích sự khác biệt?"],
+["E08 – Đối ngoại và hội nhập","Một bài viết cho rằng Việt Nam trở thành thành viên của một tổ chức quốc tế ngay vào ngày ký văn kiện. Em sẽ kiểm chứng nhận định này bằng cách nào và cần phân biệt những mốc pháp lý nào?"]
+];
+let db;
+function openDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open(DB_NAME,1);req.onupgradeneeded=()=>{const d=req.result;if(!d.objectStoreNames.contains(STORE))d.createObjectStore(STORE,{keyPath:"code"});};req.onsuccess=()=>{db=req.result;resolve(db)};req.onerror=()=>reject(req.error);});}
+function tx(mode="readonly"){return db.transaction(STORE,mode).objectStore(STORE)}
+function getAll(){return new Promise((res,rej)=>{const r=tx().getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function getOne(code){return new Promise((res,rej)=>{const r=tx().get(code);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function put(rec){return new Promise((res,rej)=>{const r=tx("readwrite").add(rec);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function render(){
+ document.getElementById("mcq").innerHTML=mcqs.map((q,i)=>`<div class="question"><div class="qtitle">Câu ${i+1}. ${escapeHtml(q[0])}</div>${q[1].map((o,j)=>`<label class="option"><input type="radio" name="q${i}" value="${j}"><span><b>${"ABCD"[j]}.</b> ${escapeHtml(o)}</span></label>`).join("")}</div>`).join("");
+ document.getElementById("evidence").innerHTML=evidence.map((e,i)=>`<div class="question"><div class="qtitle">${escapeHtml(e[0])}</div><p>${escapeHtml(e[1])}</p><textarea class="answer" id="e${i}" maxlength="3000" placeholder="Viết câu trả lời của em..."></textarea></div>`).join("");
+}
+let deadline, timerHandle;
+function startTimer(){deadline=Date.now()+55*60*1000;const tick=()=>{let left=Math.max(0,deadline-Date.now());let m=Math.floor(left/60000),s=Math.floor(left%60000/1000);document.getElementById("timer").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");if(left<=0){clearInterval(timerHandle);submitExam(true)}};tick();timerHandle=setInterval(tick,1000)}
+document.getElementById("startBtn").onclick=async()=>{
+ const grade=document.getElementById("grade").value, cls=document.getElementById("className").value.trim(), code=document.getElementById("code").value.trim(), school=document.getElementById("school").value.trim();
+ if(!grade||!cls||!code){alert("Vui lòng chọn khối, nhập lớp và mã nghiên cứu.");return}
+ if(!/^[\p{L}\p{N}_-]{3,40}$/u.test(code)){alert("Mã nghiên cứu chỉ nên gồm chữ, số, dấu gạch dưới hoặc gạch ngang (3–40 ký tự).");return}
+ try{await openDB();if(await getOne(code)){alert("Mã nghiên cứu này đã có bài nộp trên trình duyệt này. Hãy kiểm tra mã hoặc liên hệ người phụ trách.");return}}catch(e){alert("Không mở được bộ nhớ trình duyệt. Hãy dùng trình duyệt hiện đại và bật lưu trữ trang.");return}
+ window.student={grade,cls,code,school};document.getElementById("intro").classList.add("hidden");document.getElementById("exam").classList.remove("hidden");document.getElementById("examBar").classList.remove("hidden");document.getElementById("studentLabel").textContent=`Khối ${grade} · Lớp ${cls}`;render();startTimer();window.scrollTo(0,0);
+};
+async function submitExam(auto=false){
+ if(!window.student)return;
+ if(!auto&&!confirm("Bạn chắc chắn muốn nộp bài? Sau khi nộp không thể chỉnh sửa."))return;
+ clearInterval(timerHandle);let answers=mcqs.map((q,i)=>{let x=document.querySelector(`input[name="q${i}"]:checked`);return x?Number(x.value):null});
+ let score=answers.reduce((s,a,i)=>s+(a===mcqs[i][2]?1:0),0);
+ let written=evidence.map((e,i)=>({code:e[0].split(" – ")[0],prompt:e[1],response:document.getElementById("e"+i).value.trim(),score:null}));
+ let rec={...window.student,submittedAt:new Date().toISOString(),answers,knowledgeScore:score,knowledgeMax:20,evidence:written,evidenceScore:null,evidenceMax:16,autoSubmitted:auto,version:"A-T0-1.0"};
+ try{await put(rec)}catch(e){alert("Không lưu được bài làm. Có thể mã đã được sử dụng hoặc bộ nhớ trình duyệt gặp lỗi.");return}
+ document.getElementById("exam").classList.add("hidden");document.getElementById("examBar").classList.add("hidden");document.getElementById("done").classList.remove("hidden");document.getElementById("doneMsg").textContent=`Mã ${rec.code} · Khối ${rec.grade} · Điểm trắc nghiệm: ${score}/20. Phần tư duy bằng chứng đang chờ chấm.`;window.scrollTo(0,0);
+}
+document.getElementById("submitBtn").onclick=()=>submitExam(false);
+document.getElementById("backTop").onclick=()=>window.scrollTo({top:0,behavior:"smooth"});
+function adminCheck(){return document.getElementById("adminPin").value===ADMIN_PIN}
+function filtered(rows){let g=document.getElementById("filterGrade").value;return g==="all"?rows:rows.filter(r=>r.grade===g)}
+let adminRows=[];
+document.getElementById("viewBtn").onclick=async()=>{
+ if(!adminCheck()){alert("Mã quản trị không đúng.");return}
+ await openDB();adminRows=filtered(await getAll());document.getElementById("exportBtn").disabled=false;document.getElementById("csvBtn").disabled=false;
+ const counts=["10","11","12"].map(g=>({g,n:adminRows.filter(r=>r.grade===g).length}));const avg=adminRows.length?adminRows.reduce((s,r)=>s+r.knowledgeScore,0)/adminRows.length:0;
+ document.getElementById("adminStats").classList.remove("hidden");
+ document.getElementById("adminStats").innerHTML=`<div class="stats"><div class="stat"><b>${adminRows.length}</b><span>Bài đã lưu (theo bộ lọc)</span></div><div class="stat"><b>${avg.toFixed(2)}/20</b><span>Điểm trắc nghiệm trung bình</span></div><div class="stat"><b>${adminRows.filter(r=>r.evidence.every(e=>e.response)).length}</b><span>Bài đủ 8 câu tự luận</span></div></div><h3 style="margin-top:18px">Số bài theo khối</h3><table><tr><th>Khối</th><th>Số bài</th></tr>${counts.map(x=>`<tr><td>${x.g}</td><td>${x.n}</td></tr>`).join("")}</table><p class="small">Đây là thống kê dữ liệu nằm trên trình duyệt hiện tại.</p>`;
+};
+function exportRows(){
+ const summary=adminRows.map(r=>({Ma_nghien_cuu:r.code,Khoi:r.grade,Lop:r.cls,Truong:r.school,Thoi_diem_nop:r.submittedAt,Diem_kien_thuc:r.knowledgeScore,Toi_da:20,Diem_chung_cu:"Chua_cham",Tu_dong_nop:r.autoSubmitted?"Co":"Khong"}));
+ const detail=adminRows.map(r=>{let o={Ma_nghien_cuu:r.code,Khoi:r.grade,Lop:r.cls,Thoi_diem_nop:r.submittedAt,Diem_kien_thuc:r.knowledgeScore};r.answers.forEach((a,i)=>{o["Q"+String(i+1).padStart(2,"0")]=a===null?"": "ABCD"[a]});r.evidence.forEach((e,i)=>{o["E"+String(i+1).padStart(2,"0")+"_Tra_loi"]=e.response;o["E"+String(i+1).padStart(2,"0")+"_Diem"]=e.score??""});return o});
+ const ev=[];adminRows.forEach(r=>r.evidence.forEach(e=>ev.push({Ma_nghien_cuu:r.code,Khoi:r.grade,Lop:r.cls,Ma_tinh_huong:e.code,Noi_dung_tinh_huong:e.prompt,Tra_loi:e.response,Diem_0_2:""})));
+ return {summary,detail,ev};
+}
+document.getElementById("exportBtn").onclick=()=>{
+ if(!adminCheck()||!window.XLSX){alert("Không xác thực được hoặc thư viện Excel chưa tải. Hãy kiểm tra kết nối Internet.");return}
+ const data=exportRows(),wb=XLSX.utils.book_new();
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(data.summary),"Tong_hop");
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(data.detail),"Du_lieu_tung_bai");
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(data.ev),"Tu_duy_chung_cu");
+ XLSX.writeFile(wb,"Bao_cao_De_A_T0_"+new Date().toISOString().slice(0,10)+".xlsx");
+};
+document.getElementById("csvBtn").onclick=()=>{
+ if(!adminCheck())return;const data=exportRows();
+ const csv=(rows)=>{if(!rows.length)return "";const keys=[...new Set(rows.flatMap(Object.keys))];return "\ufeff"+[keys.join(","),...rows.map(r=>keys.map(k=>'"'+String(r[k]??"").replace(/"/g,'""')+'"').join(","))].join("\r\n")};
+ ["Tong_hop","Du_lieu_tung_bai","Tu_duy_chung_cu"].forEach((n,i)=>{let rows=[data.summary,data.detail,data.ev][i];let blob=new Blob([csv(rows)],{type:"text/csv;charset=utf-8"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=n+".csv";a.click();URL.revokeObjectURL(a.href)});
+};
+</script>
+</body></html>
